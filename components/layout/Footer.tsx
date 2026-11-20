@@ -2,6 +2,7 @@ import { ArrowUpRight } from "lucide-react";
 import CircuitLine from "@/components/layout/CircuitLine";
 import { conference, contact } from "@/data/conference";
 import { ABSTRACT_SUBMISSION_URL } from "@/lib/config";
+import cmsLogo from "@/logo/CMS New Logo w.png";
 
 const linkColumns = [
   {
@@ -39,6 +40,8 @@ export default function Footer() {
       <div className="shell border-t border-white/10 py-14">
         <div className="grid gap-12 lg:grid-cols-[1.3fr_1fr]">
           <div>
+            <img src={cmsLogo.src} alt="CMS Business School logo" className="mb-8 h-10 w-auto" />
+
             <p className="font-mono text-[9px] tracking-[0.24em] text-white/35 uppercase">
               International Conference · {conference.datesLabel}
             </p>
