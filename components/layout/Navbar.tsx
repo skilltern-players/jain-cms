@@ -8,6 +8,7 @@ import { ABSTRACT_SUBMISSION_URL } from "@/lib/config";
 import { getLenis, lockScroll, scrollToSection } from "@/lib/scroll";
 import { cn } from "@/lib/utils";
 import MagneticButton from "@/components/ui/MagneticButton";
+import cmsLogo from "@/logo/CMS New Logo w.png";
 
 /**
  * Fixed navigation: transparent over the hero, navy glass once the sequence is
@@ -112,18 +113,9 @@ export default function Navbar() {
             go("hero");
           }}
           className="group flex items-center gap-3"
-          aria-label="AIM-HUB 2027 — back to top"
+          aria-label="CMS Business School — back to top"
         >
-          <span className="relative grid h-7 w-7 place-items-center">
-            <span className="border-lime-400/60 absolute inset-0 rotate-45 border" />
-            <span className="bg-lime-400 h-1.5 w-1.5 rounded-full transition-transform duration-500 group-hover:scale-150" />
-          </span>
-          <span className="font-display text-sm font-semibold tracking-[-0.01em]">
-            AIM-HUB<span className="text-lime-400">.</span>
-            <span className="ml-1.5 font-mono text-[10px] font-normal tracking-[0.18em] text-steel">
-              2027
-            </span>
-          </span>
+          <img src={cmsLogo.src} alt="CMS Business School logo" className="h-7 w-auto" />
         </a>
 
         <nav aria-label="Primary" className="hidden items-center gap-6 lg:flex xl:gap-8">
