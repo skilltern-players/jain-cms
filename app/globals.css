@@ -1,0 +1,249 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ------------------------------------------------------------------ */
+/*  Design tokens                                                      */
+/*  Kept as RGB channel triples for Tailwind alpha support, plus the   */
+/*  canonical hex values requested by the design system.               */
+/* ------------------------------------------------------------------ */
+@layer base {
+  :root {
+    --navy-900: #071120;
+    --navy-800: #0a1726;
+    --navy-700: #10283f;
+    --navy-600: #1b3a57;
+    --lime-400: #b8e62e;
+    --cyan-400: #1fa3ff;
+    --white: #f2f6fa;
+    --slate-300: #9fb3c8;
+    --orange-500: #f28c1e;
+
+    --navy-900-rgb: 7 17 32;
+    --navy-800-rgb: 10 23 38;
+    --navy-700-rgb: 16 40 63;
+    --navy-600-rgb: 27 58 87;
+    --lime-400-rgb: 184 230 46;
+    --cyan-400-rgb: 31 163 255;
+    --white-rgb: 242 246 250;
+    --slate-300-rgb: 159 179 200;
+    --orange-500-rgb: 242 140 30;
+
+    --nav-line: rgb(255 255 255 / 0.06);
+  }
+
+  * {
+    @apply border-white/10;
+  }
+
+  html {
+    /* Lenis owns scrolling; native smooth-scroll would fight it. */
+    scroll-behavior: auto;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-navy-900 font-sans text-white antialiased;
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background: var(--lime-400);
+    color: var(--navy-900);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--lime-400);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* Hide the native pointer only where the custom cursor is active. */
+  @media (pointer: fine) {
+    html[data-custom-cursor="true"],
+    html[data-custom-cursor="true"] a,
+    html[data-custom-cursor="true"] button {
+      cursor: none;
+    }
+
+    html[data-custom-cursor="true"] input,
+    html[data-custom-cursor="true"] textarea {
+      cursor: text;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Layout & surface primitives                                        */
+/* ------------------------------------------------------------------ */
+@layer components {
+  .shell {
+    @apply mx-auto w-full max-w-shell px-5 sm:px-8 lg:px-12;
+  }
+
+  .section-pad {
+    @apply py-section;
+  }
+
+  .eyebrow {
+    @apply font-mono text-eyebrow uppercase text-steel;
+  }
+
+  .glass {
+    @apply border border-white/10 bg-white/[0.035] backdrop-blur-md;
+  }
+
+  .glass-strong {
+    @apply border border-white/15 bg-navy-800/70 backdrop-blur-xl;
+  }
+
+  /* Corner brackets: a HUD frame that never disturbs layout. */
+  .hud-frame {
+    position: relative;
+  }
+
+  .hud-frame::before,
+  .hud-frame::after {
+    content: "";
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border-color: rgb(var(--lime-400-rgb) / 0.55);
+    pointer-events: none;
+  }
+
+  .hud-frame::before {
+    top: -1px;
+    left: -1px;
+    border-top: 1px solid;
+    border-left: 1px solid;
+  }
+
+  .hud-frame::after {
+    right: -1px;
+    bottom: -1px;
+    border-right: 1px solid;
+    border-bottom: 1px solid;
+  }
+
+  /* Lime highlighter behind a key word — safe on light and dark. */
+  .highlight-bar {
+    background-image: linear-gradient(
+      to top,
+      rgb(var(--lime-400-rgb) / 0.85) 0,
+      rgb(var(--lime-400-rgb) / 0.85) 0.28em,
+      transparent 0.28em
+    );
+    background-repeat: no-repeat;
+    padding-inline: 0.04em;
+  }
+
+  /* Thin ruled line used between content rows. */
+  .hairline {
+    @apply h-px w-full bg-white/10;
+  }
+
+  .grain {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+    background-size: 180px 180px;
+  }
+
+  .link-underline {
+    position: relative;
+  }
+
+  .link-underline::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 100%;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .link-underline:hover::after,
+  .link-underline:focus-visible::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  GSAP SplitText helpers                                             */
+/* ------------------------------------------------------------------ */
+.split-line {
+  overflow: hidden;
+  padding-bottom: 0.06em;
+  margin-bottom: -0.06em;
+}
+
+.split-word {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Utilities                                                          */
+/* ------------------------------------------------------------------ */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .text-pretty {
+    text-wrap: pretty;
+  }
+
+  .mask-fade-x {
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 8%,
+      black 92%,
+      transparent
+    );
+    mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
